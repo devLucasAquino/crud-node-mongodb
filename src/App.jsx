@@ -8,22 +8,28 @@ function App() {
     const data = {
       name: formData.get('name'),
       age: formData.get('age')
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save customer');
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  try {
-    const response = await fetch('http://localhost:3001/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    const result = await response.json();
-    console.log('Success:', result);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
 
   return (
     <div className='App'>
